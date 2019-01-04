@@ -6,6 +6,7 @@ This feature adds more useful 404 (not found) page.
 
 import {h} from 'dom-chef';
 import select from 'select-dom';
+import features from '../libs/features';
 import {getCleanPathname} from '../libs/page-detect';
 import getDefaultBranch from '../libs/get-default-branch';
 
@@ -70,10 +71,13 @@ async function addDefaultBranchLink(bar) {
 	);
 }
 
-export default function () {
+features.add('useful-not-found-page', [
+	features.is404,
+	features.domLoaded
+], () => {
 	const parts = parseCurrentURL();
 	if (parts.length <= 1) {
-		return;
+		return false;
 	}
 
 	const bar = <h2 class="container"/>;
@@ -103,4 +107,4 @@ export default function () {
 		addCommitHistoryLink(bar);
 		addDefaultBranchLink(bar);
 	}
-}
+});
